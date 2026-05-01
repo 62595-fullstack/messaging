@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+service Message {
+  rpc SendMessage (MessageRequest) returns (MessageReply);
+}
+
+message MessageRequest {
+  string senderId = 1;
+  string receiverId = 2;
+  string content = 3;
+}
+
+message MessageReply {
+  string senderId = 1;
+  string receiverId = 2;
+  string content = 3;
+}
