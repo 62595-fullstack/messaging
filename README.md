@@ -14,7 +14,7 @@ dotnet user-secrets set programPort 5500 --project messaging.csproj
 1.2 Environment variables
 Linux
 ```bash
-export host=localhost port=5432 username=postgres password=facebook database=Messaging programport=5000
+export host=localhost port=5432 username=postgres password=facebook database=Messaging programport=5500
 ```
 Windows
 ```bash

@@ -6,6 +6,7 @@ public class MessageService : Message.MessageBase
 {
 	public override Task<MessageReply> SendMessage(MessageRequest request, ServerCallContext context)
 	{
+		System.Console.WriteLine("test");
 		// var httpContext = context.GetHttpContext();
 		// var clientCertificate = httpContext.Connection.ClientCertificate;
 		return Task.FromResult(new MessageReply
