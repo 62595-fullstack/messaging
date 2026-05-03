@@ -34,13 +34,13 @@ IConfigurationRoot config = new ConfigurationBuilder()
 string programPort = config["programPort"] ?? "";
 string host = config["host"] ?? "";
 
-builder.WebHost.UseUrls($"http://{host}:{programPort}");
+builder.WebHost.UseUrls($"https://{host}:{programPort}");
 
 builder.Services.AddGrpc();
-builder.Services.AddGrpcClient<MessageService>(options =>
-{
-	options.Address = new Uri($"http://{host}:{programPort}");
-});
+// builder.Services.AddGrpcClient<MessageService>(options =>
+// {
+// 	options.Address = new Uri($"http://{host}:{programPort}");
+// });
 
 // builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen(options =>
