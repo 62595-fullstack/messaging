@@ -7,7 +7,6 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>92a3dd11-9e3c-4fa3-a47d-698140d0e2fe</UserSecretsId>
   </PropertyGroup>
-  
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.80.0" />
@@ -29,6 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Services/Messages.proto" />
+    <Protobuf Include="../protobuf/Messages.proto" GrpcServices="Server" />
   </ItemGroup>
 </Project>

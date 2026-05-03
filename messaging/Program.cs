@@ -85,12 +85,12 @@ builder.Services
 builder.Services.AddAuthorization();
 
 WebApplication app = builder.Build();
+app.MapGrpcService<MessageService>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 app.UseCors();
-
-app.MapGrpcService<MessageService>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -99,7 +99,7 @@ if (app.Environment.IsDevelopment())
 	{
 		await db.GetService<IMigrator>().MigrateAsync();
 	}
-    
+
 	app.UseSwagger();
 	// SwaggerUI can be viewed at http://localhost:{port}
 	app.UseSwaggerUI(options =>

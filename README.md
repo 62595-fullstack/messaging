@@ -3,12 +3,12 @@
 1. Secrets
 1.1 DotNET user-secrets
 ```bash
-dotnet user-secrets set host localhost --project messaging.csproj
-dotnet user-secrets set username postgres --project messaging.csproj
-dotnet user-secrets set password facebook --project messaging.csproj
-dotnet user-secrets set database Messaging --project messaging.csproj
-dotnet user-secrets set port 5432 --project messaging.csproj
-dotnet user-secrets set programPort 5500 --project messaging.csproj
+dotnet user-secrets set host localhost --project messaging
+dotnet user-secrets set username postgres --project messaging
+dotnet user-secrets set password facebook --project messaging
+dotnet user-secrets set database Messaging --project messaging
+dotnet user-secrets set port 5432 --project messaging
+dotnet user-secrets set programPort 5500 --project messaging
 ```
 
 1.2 Environment variables
