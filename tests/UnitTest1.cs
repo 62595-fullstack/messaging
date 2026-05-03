@@ -11,6 +11,7 @@ public class UnitTest1
     {
         Console.WriteLine("AAA");
         using var channel = GrpcChannel.ForAddress("https://localhost:5500");
+        // using var channel = GrpcChannel.ForAddress("https://localhost:5500", new GrpcChannelOptions() { HttpVersion = new Version(2, 0) });
         // using var channel = GrpcChannel.ForAddress("https://localhost:5001");
         Console.WriteLine("BBB");
         var client = new Message.MessageClient(channel);
