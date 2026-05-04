@@ -14,8 +14,6 @@ public class MessageService : Message.MessageBase
 
         DatabaseContext db = new DatabaseContext();
 
-
-
         var resiver = db.User.Where(u => u.Id == request.ReceiverId).FirstOrDefault();
         var sender = db.User.Where(u => u.Id == request.SenderId).FirstOrDefault();
 
@@ -27,10 +25,7 @@ public class MessageService : Message.MessageBase
 
         };
 
-
         await db.Message.AddAsync(message);
-
-
 
         return new MessageReply
         {
@@ -48,9 +43,7 @@ public class MessageService : Message.MessageBase
 
         var allTheMessageToAUser = await db.Message.Where(m => m.userReviverId.Id == request.ReceiverId).ToListAsync();
 
-
         List<MessageReply> listOfMessages = new List<MessageReply>();
-
 
         allTheMessageToAUser.ForEach(x => listOfMessages.Add(new MessageReply
         {
