@@ -2,6 +2,7 @@ syntax = "proto3";
 
 service Message {
   rpc SendMessage (MessageRequest) returns (MessageReply);
+  rpc ReceiveMessage (UserOfMessage) returns (AllMessage);
 }
 
 message MessageRequest {
@@ -10,8 +11,21 @@ message MessageRequest {
   string content = 3;
 }
 
+
+message AllMessage{
+  repeated MessageReply messageReplys = 1;
+}
+
+
 message MessageReply {
   string senderId = 1;
   string receiverId = 2;
   string content = 3;
 }
+
+message UserOfMessage {
+  string senderId = 1;
+  string receiverId = 2;
+}
+
+
