@@ -43,12 +43,9 @@ builder.Services
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Secret"]!)),
-                    ValidIssuer = $"http://{host}:{programPort}",
+                    ValidIssuer = config["Jwt:Issuer"],
                     ValidAudience = config["Jwt:Audience"],
                     ClockSkew = TimeSpan.Zero,
-                    ValidIssuers = [
-                    $"http://{host}:{programPort}"
-                    ],
                 };
             });
 builder.Services.AddAuthorization();
