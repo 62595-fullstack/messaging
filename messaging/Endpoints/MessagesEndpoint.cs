@@ -2,7 +2,9 @@ using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using Models.Message;
 using Services.MessageService;
+using Services.MessageStream;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Endpoints;
 
@@ -18,6 +20,8 @@ public record MessageDto(
 
 public static class MessagesEndpoint
 {
+	private static readonly JsonSerializerOptions _streamJsonOptions = new(JsonSerializerDefaults.Web);
+
 	public static RouteGroupBuilder MapMessagesEndpoints(this RouteGroupBuilder group)
 	{
 		group.MapGet("/with/{otherUserId}", async Task<IResult> (string otherUserId, ClaimsPrincipal user) =>
@@ -66,7 +70,9 @@ public static class MessagesEndpoint
 					null!
 				);
 
-				return Results.Ok(ToDto(reply));
+				MessageDto dto = ToDto(reply);
+				MessageStream.Publish(reply.ReceiverId, dto);
+				return Results.Ok(dto);
 			}
 			catch (Exception ex)
 			{
@@ -75,6 +81,41 @@ public static class MessagesEndpoint
 			}
 		})
 		.WithName("SendMessage");
+
+		group.MapGet("/stream", async (HttpContext http, ClaimsPrincipal user, CancellationToken ct) =>
+		{
+			string? meId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (string.IsNullOrEmpty(meId))
+			{
+				http.Response.StatusCode = StatusCodes.Status401Unauthorized;
+				return;
+			}
+
+			http.Response.Headers.Append("Content-Type", "text/event-stream");
+			http.Response.Headers.Append("Cache-Control", "no-cache");
+			http.Response.Headers.Append("X-Accel-Buffering", "no");
+
+			(Guid connectionId, var reader) = MessageStream.Subscribe(meId);
+
+			try
+			{
+				await http.Response.WriteAsync(": connected\n\n", ct);
+				await http.Response.Body.FlushAsync(ct);
+
+				await foreach (object payload in reader.ReadAllAsync(ct))
+				{
+					string json = JsonSerializer.Serialize(payload, _streamJsonOptions);
+					await http.Response.WriteAsync($"data: {json}\n\n", ct);
+					await http.Response.Body.FlushAsync(ct);
+				}
+			}
+			catch (OperationCanceledException) { }
+			finally
+			{
+				MessageStream.Unsubscribe(meId, connectionId);
+			}
+		})
+		.WithName("StreamMessages");
 
 		return group;
 	}
