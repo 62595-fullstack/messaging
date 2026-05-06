@@ -1,3 +1,4 @@
+using Dto;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using Models.Message;
@@ -7,16 +8,6 @@ using System.Security.Claims;
 using System.Text.Json;
 
 namespace Endpoints;
-
-public record SendMessageRequestDto(string ReceiverUserId, string Content);
-
-public record MessageDto(
-	int Id,
-	string SenderUserId,
-	string ReceiverUserId,
-	string Content,
-	string CreatedDate
-);
 
 public static class MessagesEndpoint
 {

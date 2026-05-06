@@ -1,20 +1,10 @@
+using Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.Comment;
 using System.Security.Claims;
 
 namespace Endpoints;
-
-public record CreateCommentRequestDto(int EventId, string Content, int? ParentCommentId);
-
-public record CommentDto(
-	int Id,
-	int EventId,
-	int? ParentCommentId,
-	string AuthorUserId,
-	string Content,
-	string CreatedDate
-);
 
 public static class CommentsEndpoint
 {
