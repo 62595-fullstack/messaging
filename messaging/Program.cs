@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Endpoints;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Services.CommentService;
 using Services.MessageService;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,6 +31,10 @@ string host = config["host"] ?? "";
 builder.WebHost.UseUrls($"https://{host}:{programPort}");
 
 builder.Services.AddGrpc();
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+});
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -50,6 +56,10 @@ WebApplication app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapGrpcService<MessageService>();
+app.MapGrpcService<CommentService>();
+app.MapGroup("/Comments")
+    .RequireAuthorization()
+    .MapCommentsEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

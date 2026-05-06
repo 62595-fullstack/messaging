@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Models.Comment;
 using Models.Message;
 using Models.User;
 
@@ -10,6 +11,7 @@ public class DatabaseContext : DbContext
 {
     public DbSet<Users> User { get; set; }
     public DbSet<Messages> Message { get; set; }
+    public DbSet<Comments> Comment { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
