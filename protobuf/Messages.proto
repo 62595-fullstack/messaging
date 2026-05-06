@@ -19,6 +19,8 @@ message MessageReply {
   string senderId = 1;
   string receiverId = 2;
   string content = 3;
+  int32 id = 4;
+  string createdDate = 5;
 }
 
 message UserOfMessage {
