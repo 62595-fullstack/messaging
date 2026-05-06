@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+service Comment {
+  rpc CreateComment (CommentRequest) returns (CommentReply);
+  rpc ListCommentsByEvent (EventOfComment) returns (AllComment);
+}
+
+message CommentRequest {
+  int32 eventId = 1;
+  string authorUserId = 2;
+  string content = 3;
+  int32 parentCommentId = 4;
+}
+
+message AllComment{
+  repeated CommentReply commentReplies = 1;
+}
+
+message CommentReply {
+  int32 eventId = 1;
+  string authorUserId = 2;
+  string content = 3;
+  int32 parentCommentId = 4;
+}
+
+message EventOfComment {
+  int32 eventId = 1;
+}

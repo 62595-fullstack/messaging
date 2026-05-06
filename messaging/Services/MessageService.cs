@@ -1,6 +1,7 @@
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Models.Message;
+using Models.User;
 
 namespace Services.MessageService;
 
@@ -8,16 +9,16 @@ public class MessageService : Message.MessageBase
 {
     public override async Task<MessageReply> SendMessage(MessageRequest request, ServerCallContext context)
     {
-        System.Console.WriteLine("test");
+        Console.WriteLine("test");
         // var httpContext = context.GetHttpContext();
         // var clientCertificate = httpContext.Connection.ClientCertificate;
 
-        DatabaseContext db = new DatabaseContext();
+        DatabaseContext db = new();
 
-        var resiver = db.User.Where(u => u.Id == request.ReceiverId).FirstOrDefault();
-        var sender = db.User.Where(u => u.Id == request.SenderId).FirstOrDefault();
+        Users? resiver = db.User.Where(u => u.Id == request.ReceiverId).FirstOrDefault();
+        Users? sender = db.User.Where(u => u.Id == request.SenderId).FirstOrDefault();
 
-        var message = new Messages()
+        Messages message = new()
         {
             content = request.Content,
             userReviverId = resiver,
@@ -38,12 +39,12 @@ public class MessageService : Message.MessageBase
 
     public override async Task<AllMessage> ReceiveMessage(UserOfMessage request, ServerCallContext context)
     {
-        DatabaseContext db = new DatabaseContext();
-        AllMessage returnObj = new AllMessage();
+        DatabaseContext db = new();
+        AllMessage returnObj = new();
 
-        var allTheMessageToAUser = await db.Message.Where(m => m.userReviverId.Id == request.ReceiverId).ToListAsync();
+        List<Messages> allTheMessageToAUser = await db.Message.Where(m => m.userReviverId.Id == request.ReceiverId).ToListAsync();
 
-        List<MessageReply> listOfMessages = new List<MessageReply>();
+        List<MessageReply> listOfMessages = new();
 
         allTheMessageToAUser.ForEach(x => listOfMessages.Add(new MessageReply
         {
@@ -52,7 +53,7 @@ public class MessageService : Message.MessageBase
             SenderId = x.userSender.Id
         }));
 
-        returnObj.MessageReplys.Add(listOfMessages);
+        returnObj.MessageReplies.Add(listOfMessages);
         return returnObj;
 
     }
