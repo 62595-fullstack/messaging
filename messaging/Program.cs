@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System.Reflection;
 using Services.CommentService;
-using Services.MessageService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -47,11 +46,13 @@ builder.Services.AddAuthorization();
 WebApplication app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapGrpcService<MessageService>();
 app.MapGrpcService<CommentService>();
 app.MapGroup("/Comments")
     .RequireAuthorization()
     .MapCommentsEndpoints();
+app.MapGroup("/Messages")
+    .RequireAuthorization()
+    .MapMessagesEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
