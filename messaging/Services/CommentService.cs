@@ -6,7 +6,7 @@ namespace Services.CommentService;
 
 public class CommentService : Comment.CommentBase
 {
-    public override async Task<CommentReply> CreateComment(CreateCommentRequest request, ServerCallContext context)
+    public override async Task<CommentReply> CreateComment(CommentRequest request, ServerCallContext context)
     {
         if (string.IsNullOrWhiteSpace(request.Content))
         {
@@ -51,7 +51,7 @@ public class CommentService : Comment.CommentBase
         return ToReply(comment);
     }
 
-    public override async Task<CommentList> ListCommentsByEvent(ListCommentsRequest request, ServerCallContext context)
+    public override async Task<AllComment> ListCommentsByEvent(EventOfComment request, ServerCallContext context)
     {
         DatabaseContext db = new();
         List<Comments> rows = await db.Comment
@@ -59,21 +59,19 @@ public class CommentService : Comment.CommentBase
             .OrderBy(c => c.CreatedDate)
             .ToListAsync();
 
-        CommentList result = new();
+        AllComment result = new();
         foreach (Comments c in rows)
         {
-            result.Comments.Add(ToReply(c));
+            result.commentReplies.Add(ToReply(c));
         }
         return result;
     }
 
     private static CommentReply ToReply(Comments c) => new()
     {
-        Id = c.Id,
         EventId = c.EventId,
-        ParentCommentId = c.ParentCommentId ?? 0,
         AuthorUserId = c.AuthorUserId,
         Content = c.Content,
-        CreatedDate = c.CreatedDate.ToString("o"),
+        ParentCommentId = c.ParentCommentId ?? 0,
     };
 }
