@@ -2,13 +2,8 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Services.CommentService;
 using Services.MessageService;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -61,10 +56,8 @@ app.MapGroup("/Comments")
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	using (DatabaseContext db = new())
-	{
-		await db.GetService<IMigrator>().MigrateAsync();
-	}
+    await using DatabaseContext db = new();
+    await db.GetService<IMigrator>().MigrateAsync();
 }
 else
 {
