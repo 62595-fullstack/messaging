@@ -53,7 +53,7 @@ public class MessageService : Message.MessageBase
             SenderId = x.userSender.Id
         }));
 
-        returnObj.messageReplies.Add(listOfMessages);
+        returnObj.MessageReplies.Add(listOfMessages);
         return returnObj;
 
     }

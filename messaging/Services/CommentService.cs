@@ -62,7 +62,7 @@ public class CommentService : Comment.CommentBase
         AllComment result = new();
         foreach (Comments c in rows)
         {
-            result.commentReplies.Add(ToReply(c));
+            result.CommentReplies.Add(ToReply(c));
         }
         return result;
     }
