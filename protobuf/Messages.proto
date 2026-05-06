@@ -11,11 +11,9 @@ message MessageRequest {
   string content = 3;
 }
 
-
 message AllMessage{
-  repeated MessageReply messageReplys = 1;
+  repeated MessageReply messageReplies = 1;
 }
-
 
 message MessageReply {
   string senderId = 1;
@@ -27,5 +25,3 @@ message UserOfMessage {
   string senderId = 1;
   string receiverId = 2;
 }
-
-
