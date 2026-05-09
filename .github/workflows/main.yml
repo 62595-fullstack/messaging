@@ -15,4 +15,4 @@ jobs:
         tmux send -t runnerMessaging:pane "export $(cat .env)" ENTER
         tmux send -t runnerMessaging:pane "cd ~/messaging/messaging" ENTER
         tmux send -t runnerMessaging:pane "dotnet ef database update" ENTER
-        tmux send -t runnerMessaging:pane "dotnet run -e ASPNETCORE_ENVIRONMENT=development" ENTER
+        tmux send -t runnerMessaging:pane "dotnet run ENTER
